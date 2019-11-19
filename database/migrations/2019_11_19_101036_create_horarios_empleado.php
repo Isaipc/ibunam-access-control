@@ -18,6 +18,7 @@ class CreateHorariosEmpleado extends Migration
             $table->integer('empleado_id')->unsigned();
             $table->time('entrada')->nullable(false);
             $table->time('salida')->nullable(false);
+            $table->integer('dia')->nullable(false);
             $table->foreign('empleado_id')->references('id')->on('empleados');
             $table->timestamps();
         });
