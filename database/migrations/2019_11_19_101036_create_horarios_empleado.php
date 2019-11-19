@@ -15,7 +15,7 @@ class CreateHorariosEmpleado extends Migration
     {
         Schema::create('horarios_empleado', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('empleado_id')->unsigned();
+            $table->unsignedBigInteger('empleado_id')->unsigned();
             $table->time('entrada')->nullable(false);
             $table->time('salida')->nullable(false);
             $table->integer('dia')->nullable(false);

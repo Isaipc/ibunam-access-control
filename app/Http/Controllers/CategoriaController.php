@@ -36,10 +36,12 @@ class CategoriaController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'nombre' => 'required'
-        ]);
-        Categoria::create($request->all());
+        // $request->validate([
+        //     'nombre' => 'required'
+        // ]);
+        $categoria = new Categoria;
+        $categoria->nombre = $request->categoria;
+        $categoria->save();
         return redirect('/categorias')->with('success', 'Categoría creada correctamente.');
     }
 
