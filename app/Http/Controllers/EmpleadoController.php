@@ -54,7 +54,6 @@ class EmpleadoController extends Controller
         $empleado->direccion = $request->direccion;
         $empleado->rfc = $request->rfc;
         $empleado->categoria_id = $request->categoria;
-        $empleado->horario_id = null;
 
         if($empleado->save())
             return redirect('/empleados')->with('success', 'Empleado creado correctamente');
@@ -109,7 +108,6 @@ class EmpleadoController extends Controller
         $empleado->direccion = $request->direccion;
         $empleado->rfc = $request->rfc;
         $empleado->categoria_id = $request->categoria;
-        $empleado->horario_id = null;
 
         if($empleado->save())
             return redirect('/empleados')->with('success', 'Empleado actualizado correctamente');

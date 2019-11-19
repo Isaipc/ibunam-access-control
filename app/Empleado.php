@@ -12,7 +12,6 @@ class Empleado extends Model
         'apellidos',
         'telefono',
         'direccion',
-        'horario_id',
         'categoria_id'
     ];
 
