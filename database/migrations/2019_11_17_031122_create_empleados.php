@@ -22,7 +22,7 @@ class CreateEmpleados extends Migration
             $table->string('direccion', 200)->nullable();
             $table->integer('horario_id')->unsigned()->nullable();
             $table->integer('categoria_id')->unsigned();
-            $table->foreign('horario_id')->references('id')->on('horarios');
+            $table->foreign('horario_id')->references('id')->on('horarios_empleado');
             $table->foreign('categoria_id')->references('id')->on('categorias');
             $table->timestamps();
         });
