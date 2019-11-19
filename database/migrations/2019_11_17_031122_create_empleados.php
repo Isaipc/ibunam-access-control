@@ -20,7 +20,7 @@ class CreateEmpleados extends Migration
             $table->string('apellidos', 200);
             $table->string('telefono', 12)->nullable();
             $table->string('direccion', 200)->nullable();
-            $table->unsignedBigInteger('categoria_id');
+            $table->bigInteger('categoria_id')->unsigned()->index();
             $table->foreign('categoria_id')->references('id')->on('categorias');
             $table->timestamps();
         });
