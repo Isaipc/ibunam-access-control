@@ -19,6 +19,11 @@ class HorarioEmpleadoController extends Controller
         'Domingo'
     );
 
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -59,16 +64,15 @@ class HorarioEmpleadoController extends Controller
 
     private function create_horario($entrada, $salida, $dia, $empleado)
     {
-        if($entrada != null && $salida != null)
-        {
+        if ($entrada != null && $salida != null) {
             $horario = new HorarioEmpleado;
             $horario->entrada = $entrada;
             $horario->salida = $salida;
             $horario->dia = $dia;
             $horario->empleado_id = $empleado;
 
-            if($empleado->save())
-               return redirect('/horarios')->with('success', 'Horarios guardados correctamente');
+            if ($empleado->save())
+                return redirect('/horarios')->with('success', 'Horarios guardados correctamente');
             else
                 return $horario;
         }

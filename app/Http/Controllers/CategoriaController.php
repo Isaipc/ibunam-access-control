@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class CategoriaController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -51,7 +56,8 @@ class CategoriaController extends Controller
      * @param  \App\Categoria  $categoria
      * @return \Illuminate\Http\Response
      */
-    public function show(Categoria $categoria){}
+    public function show(Categoria $categoria)
+    { }
 
     /**
      * Show the form for editing the specified resource.

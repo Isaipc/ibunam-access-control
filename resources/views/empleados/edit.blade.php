@@ -44,7 +44,7 @@
                     </div>
                     <div class="form-group col-md-4">
                           <label for="">Categoría</label>
-                          <select class="form-control" name="categoria">
+                          <select class="form-control" name="categoria" required>
                                 <option value="">Seleccione una categoría</option>
                               @foreach ($categorias as $categoria)
                                 @if ($categoria->id == $empleado->categoria_id)

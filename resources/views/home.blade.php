@@ -2,8 +2,6 @@
 
 @section('content')
 <div class="container">
-    @guest
-    @else
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
@@ -14,13 +12,20 @@
                         <div class="alert alert-success" role="alert">
                             {{ session('status') }}
                         </div>
-                        @endif
+                    @endif
 
-                    Bienvenido <strong> {{ Auth::user()->name }} </strong>
+                    @guest
+                    @else
+                    <h2>
+                        Bienvenido
+                        <strong class="text-uppercase">
+                            {{ Auth::user()->name }}
+                        </strong>
+                    </h2>
+                    @endguest
                 </div>
             </div>
         </div>
     </div>
-    @endguest
 </div>
 @endsection

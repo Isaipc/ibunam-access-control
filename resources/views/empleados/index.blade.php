@@ -51,7 +51,7 @@
 
         </div>
         <div class="card-footer text-muted">
-            En esta sección puede agregar nuevas empleados.
+            En esta sección puede agregar nuevos empleados.
         </div>
     </div>
 @endsection
