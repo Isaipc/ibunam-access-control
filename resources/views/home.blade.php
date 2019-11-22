@@ -22,6 +22,7 @@
                             {{ Auth::user()->name }}
                         </strong>
                     </h2>
+                    <a href="{{ route('logs.create') }}" class="btn btn-md btn-primary m-auto">Capturar entrada y salida</a>
                     @endguest
                 </div>
             </div>

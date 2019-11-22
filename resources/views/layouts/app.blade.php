@@ -36,12 +36,28 @@
                     <ul class="navbar-nav mr-auto">
                         @guest
                         @else
-                            <li class="nav-item"><a href="{{ route('empleados.index') }}" class="nav-link">{{ __('Empleados')}} </a></li>
-                            <li class="nav-item"><a href="{{ route('categorias.index') }}" class="nav-link">{{ __('Categorias')}} </a></li>
-                            <li class="nav-item"><a href="{{ route('horarios.index') }}" class="nav-link">{{ __('Horarios')}} </a></li>
-                            <li class="nav-item"><a href="#" class="nav-link">{{ __('Reportes')}} </a></li>
+                        <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ __('Catálogos') }}</a>
+                            <div class="dropdown-menu">
+                                <a class="nav-link" href="{{ route('empleados.index') }}">{{ __('Empleados')}} </a>
+                                <a class="nav-link" href="{{ route('categorias.index') }}">{{ __('Categorias')}} </a>
+                                {{-- <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Action</a> --}}
+                            </div>
+                        </li>
+                        <li class="nav-item"><a href="{{ route('horarios.index') }}" class="nav-link">{{ __('Horarios')}} </a></li>
+                        <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ __('Reportes') }}</a>
+                                <div class="dropdown-menu">
+                                    <a class="nav-link" href="{{ route('logs.index') }}">{{ __('Entradas y salidas')}} </a>
+                                    {{-- <a class="nav-link" href="{{ route('categorias.index') }}">{{ __('Categorias')}} </a> --}}
+                                    {{-- <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#">Action</a> --}}
+                                </div>
+                            </li>
                         @endguest
                     </ul>
+
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
@@ -80,7 +96,6 @@
         </nav>
 
         <main class="py-4">
-
             <div class="container">
                 @if (session('success'))
                     <div class="alert alert-success alert-dismissible fade show" role="alert">

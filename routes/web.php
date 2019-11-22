@@ -23,3 +23,4 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('categorias', 'CategoriaController');
 Route::resource('empleados', 'EmpleadoController');
 Route::resource('horarios', 'HorarioEmpleadoController');
+Route::resource('logs', 'LogEmpleadoController');
