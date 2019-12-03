@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Empleado;
+use App\Categoria;
+use App\HorarioEmpleado;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +26,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $empleados = (Empleado::all())->count();
+        $categorias = Categoria::all()->count();
+        $horarios = HorarioEmpleado::all()->count();
+        // dd($empleados);
+        // $empleados = Horarios::all();
+        return view('home', ['empleados' => $empleados, 'categorias' => $categorias, 'horarios' => $horarios]);
     }
 }

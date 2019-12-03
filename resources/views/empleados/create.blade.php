@@ -17,33 +17,33 @@
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label for="">Nombre</label>
-                        <input type="text" class="form-control" name="nombre" required>
+                        <input type="text" class="form-control text-uppercase" name="nombre"  required>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="">Apellidos</label>
-                        <input type="text" class="form-control" name="apellidos" required>
+                        <input type="text" class="form-control text-uppercase" name="apellidos" required>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="form-group col-md-3">
                         <label for="">Telefono</label>
-                        <input type="text" class="form-control" name="telefono" required maxlength="12">
+                        <input type="tel" class="form-control" name="telefono" maxlength="12">
                     </div>
                     <div class="form-group col-md-9">
                         <label for="">Dirección</label>
-                        <input  type="text" class="form-control" name="direccion" required>
+                        <input  type="text" class="form-control text-uppercase" name="direccion">
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label for="">RFC</label>
-                        <input type="text" class="form-control" name="rfc" required maxlength="13">
+                        <input type="text" class="form-control text-uppercase" name="rfc" required maxlength="13">
                     </div>
                     <div class="form-group col-md-4">
                           <label for="">Categoría</label>
-                          <select class="form-control" name="categoria" required>
+                          <select class="form-control text-uppercase" name="categoria" required>
                             <option value="">Seleccione una categoría</option>
                               @foreach ($categorias as $categoria)
                                 <option value="{{ $categoria->id }}">{{ $categoria->nombre }}</option>
@@ -53,7 +53,7 @@
                 </div>
 
                 <button type="submit" class="btn btn-md btn-primary">Guardar</button>
-                <a href="{{ route('empleados.index') }} " class="btn btn-md btn-light">Cancelar</a>
+                <a href="{{ route('empleados.index') }} " class="btn btn-md btn-secondary">Cancelar</a>
             </form>
         </div>
         {{-- <div class="card-footer text-muted"></div> --}}

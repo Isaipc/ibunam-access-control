@@ -15,9 +15,9 @@
             <form action="{{ route('categorias.update', $categoria->id) }} " method="POST">
                 @csrf
                 @method('PUT')
-                <div class="form-group">
-                    <label for="i_nombre">Nombre</label>
-                    <input id="i_nombre" type="text" class="form-control" name="nombre" required value="{{ $categoria->nombre }}">
+                <div class="form-group row">
+                    <label for="i_nombre" class="col-lg-2">Nombre</label>
+                    <input id="i_nombre" type="text" class="form-control text-uppercase col-lg-4" name="categoria"  required value="{{ $categoria->nombre }}">
                 </div>
                 <button type="submit" class="btn btn-md btn-primary">Guardar</button>
                 <a href="{{ route('categorias.index') }} " class="btn btn-md btn-light">cancelar</a>

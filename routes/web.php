@@ -11,14 +11,15 @@
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-})->middleware('auth');
+Route::get('/','HomeController@index');
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-
+Route::get('ajax/horarios', 'HorarioEmpleadoController@getHorarios');
+Route::get('/categorias/reporte', 'CategoriaController@generarPDF');
+Route::get('/empleados/reporte', 'EmpleadoController@generarPDF');
+Route::get('/logs/reporte', 'LogEmpleadoController@generarPDF');
 
 Route::resource('categorias', 'CategoriaController');
 Route::resource('empleados', 'EmpleadoController');

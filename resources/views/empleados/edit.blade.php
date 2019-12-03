@@ -18,11 +18,11 @@
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label for="">Nombre</label>
-                        <input type="text" class="form-control" name="nombre" required value="{{ $empleado->nombre }}">
+                        <input type="text" class="form-control text-uppercase" name="nombre" required value="{{ $empleado->nombre }}">
                     </div>
                     <div class="form-group col-md-6">
                         <label for="">Apellidos</label>
-                        <input type="text" class="form-control" name="apellidos" required value="{{ $empleado->apellidos }}">
+                        <input type="text" class="form-control text-uppercase" name="apellidos" required value="{{ $empleado->apellidos }}">
                     </div>
                 </div>
 
@@ -33,18 +33,18 @@
                     </div>
                     <div class="form-group col-md-9">
                         <label for="">Dirección</label>
-                        <input  type="text" class="form-control" name="direccion" required value="{{ $empleado->direccion }}">
+                        <input  type="text" class="form-control text-uppercase" name="direccion" required value="{{ $empleado->direccion }}">
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label for="">RFC</label>
-                        <input type="text" class="form-control" name="rfc" required maxlength="13" value="{{ $empleado->rfc }}">
+                        <input type="text" class="form-control text-uppercase" name="rfc" required maxlength="13" value="{{ $empleado->rfc }}">
                     </div>
                     <div class="form-group col-md-4">
                           <label for="">Categoría</label>
-                          <select class="form-control" name="categoria" required>
+                          <select class="form-control text-uppercase" name="categoria" required>
                                 <option value="">Seleccione una categoría</option>
                               @foreach ($categorias as $categoria)
                                 @if ($categoria->id == $empleado->categoria_id)
@@ -57,7 +57,7 @@
                 </div>
 
                 <button type="submit" class="btn btn-md btn-primary">Guardar</button>
-                <a href="{{ route('empleados.index') }} " class="btn btn-md btn-light">Cancelar</a>
+                <a href="{{ route('empleados.index') }} " class="btn btn-md btn-secondary">Cancelar</a>
             </form>
         </div>
         {{-- <div class="card-footer text-muted"></div> --}}

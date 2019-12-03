@@ -9,8 +9,6 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -18,6 +16,8 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/daterangepicker.css') }}" rel="stylesheet">
+
 </head>
 <body>
     <div id="app">
@@ -28,50 +28,52 @@
                     <img src="{{ asset('img/ibunam_color.png') }}" alt="" height="100px">
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
-                        @guest
-                        @else
-                        <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ __('Catálogos') }}</a>
-                            <div class="dropdown-menu">
-                                <a class="nav-link" href="{{ route('empleados.index') }}">{{ __('Empleados')}} </a>
-                                <a class="nav-link" href="{{ route('categorias.index') }}">{{ __('Categorias')}} </a>
-                                {{-- <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">Action</a> --}}
-                            </div>
-                        </li>
-                        <li class="nav-item"><a href="{{ route('horarios.index') }}" class="nav-link">{{ __('Horarios')}} </a></li>
-                        <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ __('Reportes') }}</a>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <!-- Left Side Of Navbar -->
+                        <ul class="navbar-nav mr-auto">
+                            @guest
+                            @else
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ __('Catálogos') }}</a>
                                 <div class="dropdown-menu">
-                                    <a class="nav-link" href="{{ route('logs.index') }}">{{ __('Entradas y salidas')}} </a>
-                                    {{-- <a class="nav-link" href="{{ route('categorias.index') }}">{{ __('Categorias')}} </a> --}}
+                                    <a class="nav-link" href="{{ route('empleados.index') }}">{{ __('Empleados')}} </a>
+                                    <a class="nav-link" href="{{ route('categorias.index') }}">{{ __('Categorias')}} </a>
                                     {{-- <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="#">Action</a> --}}
                                 </div>
                             </li>
-                        @endguest
-                    </ul>
+                            <li class="nav-item"><a href="{{ route('horarios.index') }}" class="nav-link">{{ __('Horarios')}} </a></li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ __('Reportes') }}</a>
+                                <div class="dropdown-menu">
+                                    <a class="nav-link" href="{{ route('logs.index') }}">{{ __('Entradas y salidas')}} </a>
+                                    {{-- <a class="nav-link" href="{{ route('categorias.index') }}">{{ __('Categorias')}} </a> --}}
+                                    {{-- <a class="nav-link" href="{{ route('empleados.index') }}">{{ __('Empleados')}} </a> --}}
+                                    {{-- <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#">Action</a> --}}
+                                </div>
+                            </li>
+                            <li class="nav-item"><a href="{{ route('logs.create') }}" class="nav-link">{{ __('Capturar')}} </a></li>
+                            @endguest
+                        </ul>
 
 
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
-                        @guest
+                        <!-- Right Side Of Navbar -->
+                        <ul class="navbar-nav ml-auto">
+                            <!-- Authentication Links -->
+                            @guest
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('login') }}">{{ __('Ingresar') }}</a>
                             </li>
                             @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Registrar') }}</a>
-                                </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('register') }}">{{ __('Registrar') }}</a>
+                            </li>
                             @endif
-                        @else
+                            @else
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle text-uppercase" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>
@@ -79,50 +81,56 @@
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
+                                    onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                         {{ __('Cerrar sesión') }}
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        @csrf
+                                            @csrf
                                     </form>
                                 </div>
                             </li>
-                        @endguest
-                    </ul>
+                            @endguest
+                        </ul>
+                    </div>
                 </div>
-            </div>
-        </nav>
+            </nav>
+            <main class="py-4">
+                <div class="container">
 
-        <main class="py-4">
-            <div class="container">
-                @if (session('success'))
+                    @if (session('success'))
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                         <strong>{{ session('success')}} </strong>
                     </div>
-                    <script>
-                        $(".alert").alert();
-                        </script>
-                @endif
+                    <script>jQuery(".alert").alert();</script>
+                    @endif
 
-                @if (session('error'))
+                    @if (session('error'))
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                         <strong>{{ session('error')}} </strong>
                     </div>
-                    <script>
-                        $(".alert").alert();
-                        </script>
-                @endif
-                @yield('content')
+                    <script>jQuery(".alert").alert();</script>
+                    @endif
+
+                    {{-- <div class="row"> --}}
+                        {{-- <div class="col col-md-8"> --}}
+                            @yield('content')
+                        {{-- </div> --}}
+                    {{-- </div> --}}
+
             </div>
         </main>
     </div>
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/moment.min.js') }}"></script>
+    <script src="{{ asset('js/daterangepicker.min.js') }}"></script>
 </body>
 </html>

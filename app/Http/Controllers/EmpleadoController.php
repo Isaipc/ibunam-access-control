@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use PDF;
 use App\Categoria;
 use App\Empleado;
 use Illuminate\Http\Request;
@@ -21,7 +22,8 @@ class EmpleadoController extends Controller
     public function index()
     {
         $empleados = Empleado::orderBy('created_at', 'DESC')->get();
-        return view('empleados.index', ['empleados' => $empleados]);
+        $count_empleados = $empleados->count();
+        return view('empleados.index', ['empleados' => $empleados, 'count_empleados' => $count_empleados]);
     }
 
     /**
@@ -47,23 +49,22 @@ class EmpleadoController extends Controller
             'rfc' => 'required|max:13',
             'nombre' => 'required',
             'apellidos' => 'required',
-            'telefono' => 'required|max:12',
-            'direccion' => 'required',
+            'telefono' => 'max:12',
             'categoria' => 'required'
         ]);
 
         $empleado = new Empleado;
-        $empleado->nombre = $request->nombre;
-        $empleado->apellidos = $request->apellidos;
+        $empleado->nombre = mb_strtoupper($request->nombre, 'UTF-8');
+        $empleado->apellidos = mb_strtoupper($request->apellidos, 'UTF-8');
         $empleado->telefono = $request->telefono;
-        $empleado->direccion = $request->direccion;
-        $empleado->rfc = $request->rfc;
+        $empleado->direccion = mb_strtoupper($request->direccion, 'UTF-8');
+        $empleado->rfc = mb_strtoupper($request->rfc, 'UTF-8');
         $empleado->categoria_id = $request->categoria;
 
         if($empleado->save())
             return redirect('/empleados')->with('success', 'Empleado creado correctamente');
         else
-            return view('empleados.create', ['empleado' => $empleado]);
+            dd($empleado);
     }
 
     /**
@@ -72,9 +73,9 @@ class EmpleadoController extends Controller
      * @param  \App\Empleado  $empleado
      * @return \Illuminate\Http\Response
      */
-    public function show(Empleado $empleado)
+    public function show(Request $request)
     {
-        //
+        return response()->json(['success' => true, 'empleado' => Empleado::find($request->id) ]);
     }
 
     /**
@@ -107,11 +108,11 @@ class EmpleadoController extends Controller
             'categoria' => 'required'
         ]);
 
-        $empleado->nombre = $request->nombre;
-        $empleado->apellidos = $request->apellidos;
+        $empleado->nombre = mb_strtoupper($request->nombre, 'UTF-8');
+        $empleado->apellidos = mb_strtoupper($request->apellidos, 'UTF-8');
         $empleado->telefono = $request->telefono;
-        $empleado->direccion = $request->direccion;
-        $empleado->rfc = $request->rfc;
+        $empleado->direccion = mb_strtoupper($request->direccion, 'UTF-8');
+        $empleado->rfc = mb_strtoupper($request->rfc, 'UTF-8');
         $empleado->categoria_id = $request->categoria;
 
         if($empleado->save())
@@ -130,5 +131,12 @@ class EmpleadoController extends Controller
     {
         $empleado->delete();
         return redirect('/empleados')->with('success', 'Empleado eliminado correctamente');
+    }
+
+    public function generarPDF()
+    {
+        $empleados = Empleado::orderBy('nombre', 'ASC')->get();
+        $pdf = PDF::loadView('empleados.list', compact('empleados'));
+        return $pdf->stream();
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Empleado;
+use App\Horario;
 use App\HorarioEmpleado;
 use Illuminate\Http\Request;
 
@@ -10,13 +11,13 @@ class HorarioEmpleadoController extends Controller
 {
 
     public $dias_semana = array(
+        'Domingo',
         'Lunes',
         'Martes',
         'Miercoles',
         'Jueves',
         'Viernes',
-        'Sabado',
-        'Domingo'
+        'Sabado'
     );
 
     public function __construct()
@@ -31,8 +32,16 @@ class HorarioEmpleadoController extends Controller
      */
     public function index()
     {
+        $horarios = HorarioEmpleado::orderBy('dia','DESC')->get();
         $empleados = Empleado::orderBy('nombre', 'ASC')->get();
-        return view('horarios.index', ['empleados' => $empleados, 'dias_semana' => $this->dias_semana]);
+        return view('horarios.index',
+        ['empleados' => $empleados, 'horarios' => $horarios, 'dias_semana' => $this->dias_semana]);
+    }
+
+    public function getHorarios(Request $request){
+        $empleado = Empleado::find($request->empleado);
+        $horarios = $empleado->horarios->sortBy('dia')->values()->all();
+        return response()->json(['success' => true, 'empleado' => $empleado, 'horarios' => $horarios]);
     }
 
     /**
@@ -42,7 +51,8 @@ class HorarioEmpleadoController extends Controller
      */
     public function create()
     {
-        //
+        $empleados = Empleado::orderBy('nombre', 'ASC')->get();
+        return view('horarios.create', ['empleados' => $empleados, 'dias_semana' => $this->dias_semana]);
     }
 
     /**
@@ -53,29 +63,20 @@ class HorarioEmpleadoController extends Controller
      */
     public function store(Request $request)
     {
-        $this->create_horario($request->entradaLunes, $request->salidaLunes, 0, $request->empleado);
-        $this->create_horario($request->entradaMartes, $request->salidaMartes, 1, $request->empleado);
-        $this->create_horario($request->entradaMiercoles, $request->salidaMiercoles, 2, $request->empleado);
-        $this->create_horario($request->entradaJueves, $request->salidaJueves, 3, $request->empleado);
-        $this->create_horario($request->entradaViernes, $request->salidaViernes, 4, $request->empleado);
-        $this->create_horario($request->entradaSabado, $request->salidaSabado, 5, $request->empleado);
-        $this->create_horario($request->entradaDomingo, $request->salidaDomingo, 6, $request->empleado);
+        // dd($request->dias);
+        foreach ($request->dias as $dia){
+            $this->create_horario($request, $dia);
+            // var_dump($dia);
+        }
+        return redirect('/horarios')->with('success', 'Horario guardado correctamente');
     }
 
-    private function create_horario($entrada, $salida, $dia, $empleado)
+    private function create_horario($request, $dia)
     {
-        if ($entrada != null && $salida != null) {
-            $horario = new HorarioEmpleado;
-            $horario->entrada = $entrada;
-            $horario->salida = $salida;
-            $horario->dia = $dia;
-            $horario->empleado_id = $empleado;
-
-            if ($empleado->save())
-                return redirect('/horarios')->with('success', 'Horarios guardados correctamente');
-            else
-                return $horario;
-        }
+         HorarioEmpleado::updateOrCreate(
+            ['empleado_id' => $request->empleado,'dia' => $dia],
+            ['entrada' => $request->entrada, 'salida' => $request->salida]
+        );
     }
 
     /**
@@ -118,8 +119,11 @@ class HorarioEmpleadoController extends Controller
      * @param  \App\HorarioEmpleado  $horarioEmpleado
      * @return \Illuminate\Http\Response
      */
-    public function destroy(HorarioEmpleado $horarioEmpleado)
+    public function destroy($id)
     {
-        //
+        if(HorarioEmpleado::destroy($id))
+            return redirect('/horarios')->with('success', 'Horario eliminado correctamente');
+        else
+            return redirect('/horarios')->with('error', 'No se ha podido eliminar el horario');
     }
 }

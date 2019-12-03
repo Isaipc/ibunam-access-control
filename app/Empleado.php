@@ -24,4 +24,14 @@ class Empleado extends Model
     {
         return $this->hasMany('App\HorarioEmpleado');
     }
+
+    public function logs()
+    {
+        return $this->hasMany('App\LogEmpleado');
+    }
+
+    public function totalHrs()
+    {
+        return $this->horarios()->totalHrs()->sum();
+    }
 }

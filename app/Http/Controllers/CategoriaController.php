@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use PDF;
 use App\Categoria;
 use Illuminate\Http\Request;
 
@@ -20,7 +21,8 @@ class CategoriaController extends Controller
     public function index()
     {
         $categorias = Categoria::orderBy('created_at', 'DESC')->get();
-        return view('categorias.index', ["categorias" => $categorias]);
+        $count_categorias = $categorias->count();
+        return view('categorias.index', ["categorias" => $categorias, 'count_categorias' => $count_categorias]);
     }
 
     /**
@@ -45,7 +47,7 @@ class CategoriaController extends Controller
         //     'nombre' => 'required'
         // ]);
         $categoria = new Categoria;
-        $categoria->nombre = $request->categoria;
+        $categoria->nombre = mb_strtoupper($request->categoria, 'UTF-8');
         $categoria->save();
         return redirect('/categorias')->with('success', 'Categoría creada correctamente.');
     }
@@ -79,10 +81,8 @@ class CategoriaController extends Controller
      */
     public function update(Request $request, Categoria $categoria)
     {
-        $request->validate([
-            'nombre' => 'required'
-        ]);
-        $categoria->update($request->all());
+        $categoria->nombre = mb_strtoupper($request->categoria, 'UTF-8');
+        $categoria->save();
         return redirect('/categorias')->with('success', 'Categoría actualizada correctamente.');
     }
 
@@ -96,5 +96,13 @@ class CategoriaController extends Controller
     {
         $categoria->delete();
         return redirect('/categorias')->with('success', 'Categoría eliminada correctamente.');
+    }
+
+    public function generarPDF()
+    {
+        $categorias = Categoria::all();
+        $count_categorias = $categorias->count();
+        $pdf = PDF::loadView('categorias.list', compact([ 'categorias', 'count_categorias' ]));
+        return $pdf->stream();
     }
 }
