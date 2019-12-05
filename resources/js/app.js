@@ -34,6 +34,25 @@ const app = new Vue({
     el: '#app'
 });
 
+const dayNames = ['Domingo','Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];
+const daysOfWeek = ['Do','Lu','Ma','Mi','Ju','Vi','Sa'];
+const monthNames = [
+    'Enero',
+    'Febrero',
+    'Marzo',
+    'Abril',
+    'Mayo',
+    'Junio',
+    'Julio',
+    'Agosto',
+    'Setiembre',
+    'Octubre',
+    'Noviembre',
+    'Diciembre'
+];
+
+const dateFormat = 'DD/MM/YYYY';
+
 var today = new Date();
 console.log(formatAMPM(today));
 
@@ -64,6 +83,20 @@ jQuery(document).ready( function ( ) {
     });
 
 
+    // datepicker
+    jQuery('.fecha').daterangepicker({
+        singleDatePicker: true,
+        locale : {
+            daysOfWeek: daysOfWeek,
+            monthNames: monthNames,
+            format: dateFormat
+        },
+        autoApply: true,
+        maxDate : today,
+        fromLabel: 'Desde',
+        toLabel: 'Hasta'
+    });
+
     jQuery('#daterange').daterangepicker({
             opens: 'center',
             // showCustomRangeLabel : true,
@@ -71,29 +104,9 @@ jQuery(document).ready( function ( ) {
             locale : {
                 applyLabel : 'Guardar',
                 cancelLabel : 'Dejar vacio',
-                daysOfWeek: [
-                    'Do',
-                    'Lu',
-                    'Ma',
-                    'Mi',
-                    'Ju',
-                    'Vi',
-                    'Sa'
-                ],
-                monthNames: [
-                    'Enero',
-                    'Febrero',
-                    'Marzo',
-                    'Abril',
-                    'Mayo',
-                    'Junio',
-                    'Julio',
-                    'Agosto',
-                    'Setiembre',
-                    'Octubre',
-                    'Noviembre',
-                    'Diciembre'
-                ],
+                daysOfWeek: daysOfWeek,
+                monthNames: monthNames,
+                format: dateFormat
             },
             maxDate : today,
             fromLabel: 'Desde',
@@ -102,10 +115,9 @@ jQuery(document).ready( function ( ) {
         }, function(start, end, label){
             // console.log('new date selection was made: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD'));
         });
-
-        jQuery('#daterange').on('cancel.daterangepicker', function (ev, picker) {
-            jQuery('#daterange').val('');
-        });
+    jQuery('#daterange').on('cancel.daterangepicker', function (ev, picker) {
+        jQuery('#daterange').val('');
+    });
 });
 
 // jQuery.validator.addMethod('greather_than', function(value, element, params){
@@ -180,25 +192,7 @@ function show_empleado(empleado_id)
     });
 }
 
-// jQuery(document).on('change', '#s_empleado', function (e) {
-//     jQuery.ajaxSetup({
-//         headers: {
-//             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-//         }
-//     });
 
-//     jQuery.ajax({
-//         type: 'GET',
-//         dataType: 'json',
-//         url: '',
-//         data: ,
-//         success : function (data){
-//             jQuery('table tbody').empty();
-//             for(var i = 0; i < data.)
-//         },
-//         timeout: 1000
-//     });
-// });
 // ********************END-EVENTS********************
 function dateToLongTime(date){
     return date.toLocaleString('es-MX', {
@@ -239,7 +233,6 @@ function formatAMPM(date) {
     return strTime;
 }
 
-const dayNames = ['Domingo','Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];
 
 function fillDayNames() {
     var selectDia = document.getElementById('s_dia');

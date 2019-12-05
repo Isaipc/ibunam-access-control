@@ -102,7 +102,8 @@ class CategoriaController extends Controller
     {
         $categorias = Categoria::all();
         $count_categorias = $categorias->count();
-        $pdf = PDF::loadView('categorias.list', compact([ 'categorias', 'count_categorias' ]));
+        $pdf = PDF::loadView('categorias.list', compact([ 'categorias', 'count_categorias' ]))
+        ->setPaper('letter','landscape');
         return $pdf->stream();
     }
 }

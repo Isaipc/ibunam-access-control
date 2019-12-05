@@ -26,7 +26,7 @@
             </div>
             <div class="form-group row">
                 <label for="" class="col-md-2 text-md-right text-lg-right">Fecha</label>
-                <input id="fecha" type="datetime" name="" class="form-control  col-md-6 col-lg-4" disabled>
+                <input id="fecha" type="datetime" name="fecha" class="fecha form-control col-md-6 col-lg-4" required>
             </div>
             <div class="form-group row">
                 <label for="" class="col-md-2 text-md-right text-lg-right">Hora de entrada</label>

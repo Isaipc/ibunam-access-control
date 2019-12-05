@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use PDF;
 use App\Categoria;
 use App\Empleado;
 use Illuminate\Http\Request;
+
+use PDF;
 
 class EmpleadoController extends Controller
 {
@@ -136,7 +137,8 @@ class EmpleadoController extends Controller
     public function generarPDF()
     {
         $empleados = Empleado::orderBy('nombre', 'ASC')->get();
-        $pdf = PDF::loadView('empleados.list', compact('empleados'));
+        $pdf = PDF::loadView('empleados.list', compact('empleados'))
+        ->setPaper('letter','landscape');
         return $pdf->stream();
     }
 }

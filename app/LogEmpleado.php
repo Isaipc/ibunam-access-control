@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class LogEmpleado extends Model
 {
     protected $table = 'logs_empleados';
+    protected $fillable = ['empleado_id', 'fecha', 'entrada', 'salida'];
 
     public function empleado()
     {
@@ -24,12 +25,10 @@ class LogEmpleado extends Model
 
     public function registro()
     {
-        $d_entrada = date_create($this->entrada);
-        $d_salida = date_create($this->salida);
-
-        $dia = date_format($d_entrada, 'd');
-        $entrada = date_format($d_entrada, 'H:i');
-        $salida = date_format($d_salida, 'H:i');
-        return $dia . ' ( DE ' . $entrada . ' a ' . $salida . ')';
+        $fecha = new Carbon($this->fecha);
+        return
+        // $fecha->day
+        $fecha->format('d/m/Y')
+        . ' ( DE ' . $this->entrada . ' a ' . $this->salida . ')';
     }
 }

@@ -54183,6 +54183,10 @@ Vue.component('example-component', __webpack_require__(/*! ./components/ExampleC
 var app = new Vue({
   el: '#app'
 });
+var dayNames = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];
+var daysOfWeek = ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'];
+var monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Setiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+var dateFormat = 'DD/MM/YYYY';
 var today = new Date();
 console.log(formatAMPM(today));
 jQuery('.multiple-select').selectpicker(); // ********************EVENTS********************
@@ -54204,6 +54208,19 @@ jQuery(document).ready(function () {
   jQuery('#exampleModal').on('show.bs.modal', function (event) {
     var button = jQuery(event.relatedTarget);
     var modal = jQuery(_this); // Use above variables to manipulate the DOM
+  }); // datepicker
+
+  jQuery('.fecha').daterangepicker({
+    singleDatePicker: true,
+    locale: {
+      daysOfWeek: daysOfWeek,
+      monthNames: monthNames,
+      format: dateFormat
+    },
+    autoApply: true,
+    maxDate: today,
+    fromLabel: 'Desde',
+    toLabel: 'Hasta'
   });
   jQuery('#daterange').daterangepicker({
     opens: 'center',
@@ -54212,8 +54229,9 @@ jQuery(document).ready(function () {
     locale: {
       applyLabel: 'Guardar',
       cancelLabel: 'Dejar vacio',
-      daysOfWeek: ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'],
-      monthNames: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Setiembre', 'Octubre', 'Noviembre', 'Diciembre']
+      daysOfWeek: daysOfWeek,
+      monthNames: monthNames,
+      format: dateFormat
     },
     maxDate: today,
     fromLabel: 'Desde',
@@ -54281,25 +54299,7 @@ function show_empleado(empleado_id) {
     },
     error: function error(e) {}
   });
-} // jQuery(document).on('change', '#s_empleado', function (e) {
-//     jQuery.ajaxSetup({
-//         headers: {
-//             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-//         }
-//     });
-//     jQuery.ajax({
-//         type: 'GET',
-//         dataType: 'json',
-//         url: '',
-//         data: ,
-//         success : function (data){
-//             jQuery('table tbody').empty();
-//             for(var i = 0; i < data.)
-//         },
-//         timeout: 1000
-//     });
-// });
-// ********************END-EVENTS********************
+} // ********************END-EVENTS********************
 
 
 function dateToLongTime(date) {
@@ -54346,8 +54346,6 @@ function formatAMPM(date) {
   var strTime = hours + ':' + minutes;
   return strTime;
 }
-
-var dayNames = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];
 
 function fillDayNames() {
   var selectDia = document.getElementById('s_dia');

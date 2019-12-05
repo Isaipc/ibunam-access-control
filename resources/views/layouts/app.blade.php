@@ -49,7 +49,7 @@
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ __('Reportes') }}</a>
                                 <div class="dropdown-menu">
-                                    <a class="nav-link" href="{{ route('logs.index') }}">{{ __('Entradas y salidas')}} </a>
+                                    <a class="nav-link" href="{{ route('logs.index') }}">{{ __('Horas laboradas')}} </a>
                                     {{-- <a class="nav-link" href="{{ route('categorias.index') }}">{{ __('Categorias')}} </a> --}}
                                     {{-- <a class="nav-link" href="{{ route('empleados.index') }}">{{ __('Empleados')}} </a> --}}
                                     {{-- <div class="dropdown-divider"></div>

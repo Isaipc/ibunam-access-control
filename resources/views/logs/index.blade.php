@@ -4,7 +4,7 @@
 <div class="card">
     <div class="card-header">
         <h2>
-            Entradas y salidas
+            Horas laboradas
         </h2>
     </div>
     <div class="card-body">
@@ -38,13 +38,13 @@
                             <label class="custom-control-label" for="radio1">Solo horas extras</label>
                         </div>
                         <div class="custom-control custom-radio">
-                            <input type="radio" id="radio2" name="radio" class="custom-control-input" value="domingos">
+                            <input type="radio" id="radio2" name="radio" checked class="custom-control-input" value="domingos">
                             <label class="custom-control-label" for="radio2">Solo domingos</label>
                         </div>
-                        <div class="custom-control custom-radio">
+                        {{-- <div class="custom-control custom-radio">
                             <input type="radio" id="radio3" name="radio" checked="true" class="custom-control-input" value="ambos">
                             <label class="custom-control-label" for="radio3">Horas extras y domingos</label>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </fieldset>

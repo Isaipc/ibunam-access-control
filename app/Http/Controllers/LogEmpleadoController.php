@@ -6,6 +6,7 @@ use App\LogEmpleado;
 use App\Empleado;
 use Illuminate\Support\Facades\DB;
 use DateTime;
+// use Barryvdh\DomPDF\Facade as PDF
 use PDF;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -43,19 +44,13 @@ class LogEmpleadoController extends Controller
      */
     public function store(Request $request)
     {
-        // $date_e = date_create_from_format('d/m/Y:H:i:s', $request->entrada);
-        // $date_s = date_create_from_format('d/m/Y:H:i:s', $request->salida);
-        // dd($request->entrada);
+        $fecha =  Carbon::createFromFormat('d/m/Y', $request->fecha);
 
-        $input_time_format = 'H:i';
-        $date_e = DateTime::createFromFormat($input_time_format, $request->entrada);
-        $date_s = DateTime::createFromFormat($input_time_format, $request->salida);
-
-        $log = new LogEmpleado;
-        $log->empleado_id = $request->empleado;
-        $log->entrada = $date_e;
-        $log->salida = $date_s;
-        $log->save();
+        // dd($fecha->toDateString());
+        LogEmpleado::updateOrCreate(
+            ['empleado_id' => $request->empleado,'fecha' => $fecha->toDateString()],
+            ['entrada' => $request->entrada, 'salida' => $request->salida]
+        );
         return redirect('/logs/create')->with('success', 'Registro hecho correctamente.');;
     }
 
@@ -107,39 +102,55 @@ class LogEmpleadoController extends Controller
     public function generarPDF(Request $request)
     {
         $domingo = 1;
-        $daterange = explode('-', $request->daterange);
-        $entrada = new Carbon($daterange[0]);
-        $salida = new Carbon($daterange[1]);
+        $daterange = explode('-', str_replace(' ', '', $request->daterange));
+        $entrada = Carbon::createFromFormat('d/m/Y', $daterange[0]);
+        $salida = Carbon::createFromFormat('d/m/Y', $daterange[1]);
         $radio = $request->radio;
 
-        // dd($entrada->dayOfWeek);
-        // if($request->radio == 'extras'){
-            // $logs = DB::table('logs_empleados')->
+
+        // dd($request);
+
+
+        if($radio == 'extras'){
             // $logs = LogEmpleado::select('')
-            // ->join('empleados', 'logs_empleados.empleado_id', '=', 'empleados.id')
-            // ->whereIn('empleado_id', $request->empleados)
-            // ->whereRaw('DAYOFWEEK(created_at) = ?', $domingo)
-            // ->whereNotBetween('created_at', [$entrada->toDateTimeString(), $salida->toDateTimeString()] )
-            // ->get();
-        // }
-        if($request->radio == 'domingos'){
-            $logs = LogEmpleado::whereIn('empleado_id', $request->empleados)
-            ->whereBetween('created_at', [$entrada->toDateTimeString(), $salida->toDateTimeString()] )
-            ->whereRaw('DAYOFWEEK(created_at) = ?', $domingo)
+            $logs = LogEmpleado::
+            // ::table('logs_empleados')
+            select('logs_empleados.*')
+            ->join('empleados','logs_empleados.empleado_id', '=', 'empleados.id')
+            ->join('horarios_empleados','logs_empleados.empleado_id', '=', 'horarios_empleados.empleado_id')
+            ->whereIn('logs_empleados.empleado_id', $request->empleados)
+            ->whereBetween('logs_empleados.fecha', [$entrada->toDateString(), $salida->toDateString()] )
+            // ->whereRaw('DAYOFWEEK(fecha) != ?', $domingo)
+            ->where('logs_empleados.entrada', '<', 'horarios_empleados.entrada')
+            ->orWhere('logs_empleados.salida', '>', 'horarios_empleados.salida')
+            ->distinct()
             ->get();
-        }else{
+            // $total_empleados;
+            $count = $logs->count();
+            $view = 'logs.extras';
+
+        }else if($radio == 'domingos'){
             $logs = LogEmpleado::whereIn('empleado_id', $request->empleados)
-            ->whereBetween('created_at', [$entrada->toDateTimeString(), $salida->toDateTimeString()] )
+            ->whereBetween('fecha', [$entrada->toDateString(), $salida->toDateString()] )
+            ->whereRaw('DAYOFWEEK(fecha) = ?', $domingo)
             ->get();
+            $count = $logs->count();
+            $view = 'logs.domingo';
         }
 
-        $total_empleados = count($request->empleados);
-        // $total_empleados = count($logs->empleados);
-        // dd($logs);
+        $t_hrs = 0;
+        $t_min = 0;
+        foreach ($logs as $key => $l) {
+            $hrs = explode(':', str_replace(' ', '', $l->totalHrs()));
+            $t_hrs = $t_hrs + (int)$hrs[0];
+            $t_min = $t_min + (int)$hrs[1];
+        }
 
-        PDF::setOptions(['dpi' => 150, 'defaultFont' => 'calibri']);
-        $pdf = PDF::loadView('logs.report', compact('logs', 'total_empleados'))
-                ->setPaper('letter','landscape');
+        $total_hrs = $t_hrs.':'.$t_min;
+
+        $pdf = PDF::loadView($view, ['logs' => $logs,
+        'daterange' => $request->daterange, 'count' => $count, 'total_hrs' => $total_hrs])
+        ->setPaper('letter','landscape');
         return $pdf->stream();
     }
 }
