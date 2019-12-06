@@ -47,7 +47,7 @@ class EmpleadoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'rfc' => 'required|max:13',
+            'rfc' => 'required|max:13|unique:empleados',
             'nombre' => 'required',
             'apellidos' => 'required',
             'telefono' => 'max:12',
@@ -101,7 +101,7 @@ class EmpleadoController extends Controller
     public function update(Request $request, Empleado $empleado)
     {
         $request->validate([
-            'rfc' => 'required|max:13',
+            'rfc' => 'required|max:13|unique:empleados',
             'nombre' => 'required',
             'apellidos' => 'required',
             'telefono' => 'required|max:12',

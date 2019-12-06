@@ -39,7 +39,13 @@
                 <div class="row">
                     <div class="form-group col-md-6">
                         <label for="">RFC</label>
-                        <input type="text" class="form-control text-uppercase" name="rfc" required maxlength="13">
+                        <input type="text" class="form-control text-uppercase @error('rfc') is-invalid @enderror" name="rfc" required maxlength="13">
+
+                        @error('rfc')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
                     </div>
                     <div class="form-group col-md-4">
                           <label for="">Categoría</label>
