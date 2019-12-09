@@ -14,7 +14,7 @@
             @csrf
             <div class="form-group row">
               <label for="" class="col-md-2 text-md-right text-lg-right">Empleado</label>
-              <select name="empleado" id="" class="form-control selectpicker text-uppercase col-md-6 col-lg-4"
+              <select name="empleado" id="empleado" class="form-control selectpicker text-uppercase col-md-6 col-lg-4"
               data-live-search="true"
               title="Seleccione un empleado"
               required>

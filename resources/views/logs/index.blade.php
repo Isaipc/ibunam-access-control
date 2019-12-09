@@ -27,10 +27,25 @@
                 </select>
             </div>
             <div class="form-group row">
-                    <label for="" class="col-md-2 text-md-right text-lg-right">Periodo</label>
-                    <input id="daterange" type="text" name="daterange" value="" class="form-control col-md-6 col-lg-4" />
+                <label for="" class="col-md-2 text-md-right text-lg-right">Año</label>
+                <select name="anio" id="anio" class="form-control selectpicker text-uppercase col-md-6 col-lg-4"
+                {{-- data-live-search="true" --}}
+                title="Seleccione una año" required>
+                </select>
             </div>
-            <fieldset class="form-group row">
+            <div class="form-group row">
+                <label for="" class="col-md-2 text-md-right text-lg-right">Semana</label>
+                <select name="semana" id="semana" class="form-control selectpicker text-uppercase col-md-6 col-lg-4"
+                {{-- data-live-search="true" --}}
+                {{-- data-show-subtext="true" --}}
+                title="Seleccione una semana" required>
+                </select>
+            </div>
+            {{-- <div class="form-group row">
+                <label for="" class="col-md-2 text-md-right text-lg-right">Periodo</label>
+                <input id="daterange" type="text" name="daterange" value="" class="form-control col-md-6 col-lg-4" />
+            </div> --}}
+            {{-- <fieldset class="form-group row">
                 <div class="col-lg-4">
                     <div class="custom-control  custom-checkbox float-right">
                         <div class="custom-control custom-radio">
@@ -41,13 +56,9 @@
                             <input type="radio" id="radio2" name="radio" checked class="custom-control-input" value="domingos">
                             <label class="custom-control-label" for="radio2">Solo domingos</label>
                         </div>
-                        {{-- <div class="custom-control custom-radio">
-                            <input type="radio" id="radio3" name="radio" checked="true" class="custom-control-input" value="ambos">
-                            <label class="custom-control-label" for="radio3">Horas extras y domingos</label>
-                        </div> --}}
                     </div>
                 </div>
-            </fieldset>
+            </fieldset> --}}
             <div class="form-inline">
                 <button type="submit" class="btn btn-md btn-primary">Generar reporte</button>
             </div>

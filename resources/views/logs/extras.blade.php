@@ -3,9 +3,13 @@
 @section('content')
 
 <h4>Reporte de horas extras</h4>
-<h5>
-    periodo: [ {{ $daterange }} ]
-</h5>
+<div class="row">
+    <h5 class="text-uppercase">
+        {{-- periodo: [ {{ $daterange }} ] --}}
+        Semana:
+        <span class="text-danger">{{ $semana }}</span>
+    </h5>
+</div>
 @if($count> 0)
 <table class="table table-striped table-sm">
         <thead>

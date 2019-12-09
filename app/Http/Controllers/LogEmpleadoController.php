@@ -99,6 +99,17 @@ class LogEmpleadoController extends Controller
         //
     }
 
+    public function esHoraExtra(Request $request){
+        $empleado = Empleado::find($request->empleado_id);
+        $horarios = $empleado->horarios->whereIn('dia', );
+
+        dd($horarios);
+
+        // response()->json(['success' => true, 'esHoraExtra' => true]);
+        return response()->json(['success' => true, 'empleado' => $empleado]);
+    }
+
+
     public function generarPDF(Request $request)
     {
         $domingo = 1;
@@ -106,6 +117,8 @@ class LogEmpleadoController extends Controller
         $entrada = Carbon::createFromFormat('d/m/Y', $daterange[0]);
         $salida = Carbon::createFromFormat('d/m/Y', $daterange[1]);
         $radio = $request->radio;
+
+        dd(date('W'));
 
 
         // dd($request);

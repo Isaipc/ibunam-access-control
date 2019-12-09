@@ -54183,6 +54183,7 @@ Vue.component('example-component', __webpack_require__(/*! ./components/ExampleC
 var app = new Vue({
   el: '#app'
 });
+var qntYears = 10;
 var dayNames = ['Domingo', 'Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];
 var daysOfWeek = ['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa'];
 var monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Setiembre', 'Octubre', 'Noviembre', 'Diciembre'];
@@ -54194,16 +54195,31 @@ jQuery('.multiple-select').selectpicker(); // ********************EVENTS********
 jQuery(document).ready(function () {
   var _this = this;
 
+  moment.locale('es-MX');
   jQuery('#fecha').val(moment(today).format('YYYY-MM-DD'));
   jQuery('#i_entrada').val(dateToLongTime(today));
-  jQuery('#i_salida').val(dateToLongTime(today)); // jQuery('#i_salida').rules('add', { grather_than: '#i_entrada'});
-  // jQuery('')
-
+  jQuery('#i_salida').val(dateToLongTime(today));
+  fillYears(qntYears);
+  fillWeeksOfYear(moment().year());
   jQuery('.show-empleado').on('click', function () {
     show_empleado(this.id);
   });
   jQuery('#s_empleados').on('change', function () {
     fill_horario_grid();
+  });
+  jQuery('#anio').on('change', function () {
+    var anio = jQuery('#anio').val();
+    fillWeeksOfYear(anio);
+  });
+  jQuery('#semana').on('change', function () {
+    console.log({
+      date_range: jQuery('#semana').val()
+    });
+  });
+  jQuery('#fecha').on('apply.daterangepicker', function (ev, picker) {
+    var fecha = jQuery('#fecha').val();
+    var empleado = jQuery('#empleado').val();
+    es_hora_extra(empleado, fecha);
   });
   jQuery('#exampleModal').on('show.bs.modal', function (event) {
     var button = jQuery(event.relatedTarget);
@@ -54242,11 +54258,7 @@ jQuery(document).ready(function () {
   jQuery('#daterange').on('cancel.daterangepicker', function (ev, picker) {
     jQuery('#daterange').val('');
   });
-}); // jQuery.validator.addMethod('greather_than', function(value, element, params){
-//     var entrada  = timeToDate(value);
-//     var salida  = timeToDate(jQuery(params).val());
-//     return salida > entrada;
-// }, 'alv tienes un desmadre!');
+});
 
 function fill_horario_grid() {
   jQuery.ajaxSetup({
@@ -54298,6 +54310,29 @@ function show_empleado(empleado_id) {
       jQuery('#empleado_actualizacion').text(data.empleado.updated_at);
     },
     error: function error(e) {}
+  });
+}
+
+function es_hora_extra(empleado, fecha) {
+  jQuery.ajaxSetup({
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="_token"]').attr('content')
+    }
+  });
+  jQuery.ajax({
+    type: 'GET',
+    url: 'ajax/extras',
+    dataType: 'json',
+    data: {
+      empleado_id: empleado,
+      fecha: fecha
+    },
+    success: function success(data) {
+      console.log(data);
+    },
+    error: function error(e) {
+      console.log(e);
+    }
   });
 } // ********************END-EVENTS********************
 
@@ -54357,6 +54392,32 @@ function fillDayNames() {
     dayElement.textContent = dayName;
     selectDia.append(dayElement);
   }
+}
+
+function fillYears(qntYears) {
+  var currentYear = moment().year();
+  jQuery('#anio').append('<option value="' + currentYear + '" selected> ' + currentYear + ' </option>');
+
+  for (var i = 0; i < qntYears; i++) {
+    currentYear--;
+    jQuery('#anio').append('<option value="' + currentYear + '"> ' + currentYear + ' </option>');
+  }
+}
+
+function fillWeeksOfYear(year) {
+  var weeksOfYear = moment().year(year).weeksInYear(); // jQuery('#semana').empty();
+
+  for (var i = 1; i <= weeksOfYear; i++) {
+    var start = moment().year(year).week(i).startOf('week').format(dateFormat);
+    var end = moment().year(year).week(i).endOf('week').format(dateFormat);
+    var dateRange = start + ' - ' + end;
+    jQuery('#semana').append('<option value="' + dateRange + '" ' + 'data-subtext="' + dateRange + '" ' + '>' + i + '</option>');
+  } // console.log(jQuery('#semana'));
+  // console.log({
+  //     year :  year,
+  //     weeks: weeksOfYear
+  // });
+
 }
 
 /***/ }),
