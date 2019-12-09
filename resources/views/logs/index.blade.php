@@ -35,9 +35,9 @@
             </div>
             <div class="form-group row">
                 <label for="" class="col-md-2 text-md-right text-lg-right">Semana</label>
-                <select name="semana" id="semana" class="form-control selectpicker text-uppercase col-md-6 col-lg-4"
+                <select name="semana" id="semana" class="form-control  text-uppercase col-md-6 col-lg-4"
                 {{-- data-live-search="true" --}}
-                {{-- data-show-subtext="true" --}}
+                data-show-subtext="true"
                 title="Seleccione una semana" required>
                 </select>
             </div>

@@ -18,11 +18,15 @@
 
     <style>
         @page {
-            margin: 2cm;
+            margin: 1.5cm;
         }
 
         .page-break{
             page-break-after: always;
+        }
+
+        .table{
+            font-size: 8pt;
         }
     </style>
 </head>

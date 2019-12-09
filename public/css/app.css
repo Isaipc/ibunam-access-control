@@ -11600,3 +11600,16 @@ select.selectpicker {
   float: none;
 }
 
+label.error::before {
+  display: block;
+}
+
+label.error {
+  float: none;
+  color: red;
+  font-weight: bolder;
+  padding-left: 0.5em;
+  vertical-align: middle;
+  font-size: 12px;
+}
+

@@ -20,7 +20,7 @@ Route::get('ajax/horarios', 'HorarioEmpleadoController@getHorarios');
 Route::get('/categorias/reporte', 'CategoriaController@generarPDF');
 Route::get('/empleados/reporte', 'EmpleadoController@generarPDF');
 Route::get('/logs/reporte', 'LogEmpleadoController@generarPDF');
-Route::get('ajax/extras', 'LogEmpleadoController@esHoraExtra');
+Route::get('ajax/extras', 'LogEmpleadoController@getHorario');
 
 Route::resource('categorias', 'CategoriaController');
 Route::resource('empleados', 'EmpleadoController');

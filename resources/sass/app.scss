@@ -17,3 +17,17 @@
 //     color: red;
 //     background: red;
 // }
+
+label.error::before{
+    display: block;
+}
+
+
+label.error{
+    float: none;
+    color: red;
+    font-weight: bolder;
+    padding-left: .5em;
+    vertical-align: middle;
+    font-size: 12px;
+}
