@@ -18,10 +18,10 @@
             <th>#</th>
             <th>RFC</th>
             <th>Nombre</th>
-            <th>Domingos y Fest. Dias laborados</th>
-            <th>Horas</th>
-            <th>Prima dominical. Dias laborados</th>
-            <th>Horas</th>
+            <th class="text-center">Domingos y Fest. Dias laborados</th>
+            <th class="text-center">Horas</th>
+            <th class="text-center">Prima dominical. Dias laborados</th>
+            <th class="text-center">Horas</th>
         </tr>
     </thead>
     <tbody>
@@ -33,7 +33,7 @@
         <tr>
             <td> {{ ++$key }} </td>
             <td> {{ $item->rfc }} </td>
-            <td> {{ $item->empleado }} </td>
+            <td> {{ $item->nombre . ' ' . $item->apellidos }} </td>
             <td class="text-center">  --- </td>
             <td class="text-center">  --- </td>
             <td class="text-center"> DIA {{ $item->dia_mes }} ( DE {{$item->entrada}} A {{ $item->salida }} HRS) </td>
@@ -43,7 +43,7 @@
         <tr>
             <td> {{ ++$key }} </td>
             <td> {{ $item->rfc }} </td>
-            <td> {{ $item->empleado }} </td>
+            <td> {{ $item->nombre . ' ' . $item->apellidos }} </td>
             <td class="text-center"> DIA {{ $item->dia_mes }} ( DE {{$item->entrada}} A {{ $item->salida }} HRS) </td>
             <td class="text-center"> {{ $item->hrs }} </td>
             <td class="text-center"> --- </td>
@@ -54,10 +54,10 @@
     <tr class="font-weight-bold">
         <td colspan="2">Total empleados</td>
         <td>{{ $count }} </td>
-        <td >Total de horas</td>
-        <td>{{ $total_hrs }} </td>
-        <td >Total de horas</td>
-        <td>{{ $total_hrs_d }} </td>
+        <td class="text-center">Total de horas</td>
+        <td class="text-center">{{ $total_hrs }} </td>
+        <td class="text-center">Total de horas</td>
+        <td class="text-center">{{ $total_hrs_d }} </td>
     </tr>
 
     </tbody>
