@@ -129,6 +129,9 @@ class LogEmpleadoController extends Controller
         $entrada = Carbon::createFromFormat('d/m/Y', $daterange[0]);
         $salida = Carbon::createFromFormat('d/m/Y', $daterange[1]);
 
+        // dd(compact('entrada','salida'));
+        // dd($entrada->getLocale());
+
         // ->whereRaw('DAYOFWEEK(fecha) != ?', $domingo);
         $logs = DB::table('logs_empleados')
         ->select('logs_empleados.*',
@@ -164,16 +167,23 @@ class LogEmpleadoController extends Controller
             }
         }
 
+        // $logs->
+
+        // dd(count($logs->unique('empleado_id')));
+
         $total_hrs = ($hrs +(int) ($mins/60)) . ':' . ($mins%60);
         $total_hrs_d = ($hrs_d + (int)($mins_d/60)) . ':' . ($mins_d%60);
 
         // dd(compact('total_hrs', 'total_hrs_d'));
 
-        $periodo = mb_strtoupper('DEL '.$entrada->format('d').' AL '.$salida->format('d \\DE F \\DE Y'));
+        $periodo = mb_strtoupper('de '.$entrada->format('d').' al '.
+         $salida->format('d'). ' de ' .
+         $salida->monthName . ' de ' .  $salida->format('Y'));
+         $count = count($logs->unique('empleado_id'));
 
         $pdf = PDF::loadView('logs.extras',
         ['logs' => $logs,
-        'count' => 1,
+        'count' => $count,
         'total_hrs' => $total_hrs,
         'total_hrs_d' => $total_hrs_d,
         'semana' => $entrada->week(),
