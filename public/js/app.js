@@ -54201,8 +54201,8 @@ jQuery(document).ready(function () {
   }); // ********************LOADS********************
 
   jQuery('#fecha').val(moment(today).format('YYYY-MM-DD'));
-  jQuery('#i_entrada').val(dateToLongTime(today));
-  jQuery('#i_salida').val(dateToLongTime(today));
+  jQuery('#entrada').val(dateToLongTime(today));
+  jQuery('#salida').val(dateToLongTime(today));
   fillYears(qntYears);
   fillWeeksOfYear(moment().year()); // ********************EVENTS********************
 
@@ -54220,13 +54220,13 @@ jQuery(document).ready(function () {
     console.log({
       date_range: jQuery('#semana').val()
     });
-  }); // jQuery('#i_entrada').on('change', function(){
-
-  jQuery('#i_entrada').attr('max', jQuery('#i_salida').val()); // });
-  // jQuery('#i_salida').on('change', function(){
-
-  jQuery('#i_salida').attr('min', jQuery('#i_entrada').val()); // });
-
+  });
+  jQuery('#entrada').on('change', function () {
+    jQuery('#entrada').attr('max', jQuery('#salida').val());
+  });
+  jQuery('#salida').on('change', function () {
+    jQuery('#salida').attr('min', jQuery('#entrada').val());
+  });
   jQuery('#sp_empleado').on('change', function () {
     var fecha = jQuery('#fecha').val();
     var empleado = jQuery('#sp_empleado').val();
@@ -54331,7 +54331,7 @@ function show_empleado(empleado_id) {
       jQuery('#empleado_telefono').text(data.empleado.telefono ? data.empleado.telefono : 'No registrado');
       jQuery('#empleado_direccion').text(data.empleado.direccion ? data.empleado.direccion : 'No registrado');
       jQuery('#empleado_rfc').text(data.empleado.rfc);
-      jQuery('#empleado_categoria').text(data.empleado.categoria_id);
+      jQuery('#empleado_categoria').text(data.categoria);
       jQuery('#empleado_creacion').text(data.empleado.created_at);
       jQuery('#empleado_actualizacion').text(data.empleado.updated_at);
     },
@@ -54372,6 +54372,7 @@ function getHorario(empleado, fecha) {
       } else {
         d_entrada.addClass('d-none');
         entrada.removeAttr('max');
+        entrada.val(data.horarios.salida);
         salida.attr('min', data.horarios.salida);
         salida.val(data.horarios.salida);
         jQuery('#form').validate({

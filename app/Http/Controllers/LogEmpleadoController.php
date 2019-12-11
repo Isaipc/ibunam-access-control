@@ -9,6 +9,7 @@ use DateTime;
 // use Barryvdh\DomPDF\Facade as PDF
 use PDF;
 use Carbon\Carbon;
+use Carbon\CarbonInterval;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 
@@ -44,13 +45,28 @@ class LogEmpleadoController extends Controller
      */
     public function store(Request $request)
     {
-        $fecha =  Carbon::createFromFormat('d/m/Y', $request->fecha);
+        // $request->validate([
+        //     'empleado_id' => 'required',
+        //     'fecha' => 'required',
+        //     'entrada' => 'max:12',
+        //     'salida' => 'required'
+        // ]);
 
-        // dd($fecha->toDateString());
-        LogEmpleado::updateOrCreate(
-            ['empleado_id' => $request->empleado,'fecha' => $fecha->toDateString()],
-            ['entrada' => $request->entrada, 'salida' => $request->salida]
-        );
+        $fecha =  Carbon::createFromFormat('d/m/Y', $request->fecha);
+        $empleado = Empleado::find($request->empleado);
+        $horario = $empleado->horarios->where('dia', $fecha->dayOfWeek)->first();
+
+        // dd($horario->salida);
+        if($horario == null)
+            LogEmpleado::updateOrCreate(
+                ['empleado_id' => $request->empleado,'fecha' => $fecha->toDateString()],
+                ['entrada' => $request->entrada, 'salida' => $request->salida]
+            );
+        else
+            LogEmpleado::updateOrCreate(
+                ['empleado_id' => $request->empleado,'fecha' => $fecha->toDateString()],
+                ['entrada' => $horario->salida, 'salida' => $request->salida]
+            );
         return redirect('/logs/create')->with('success', 'Registro hecho correctamente.');;
     }
 
@@ -116,42 +132,44 @@ class LogEmpleadoController extends Controller
         // ->whereRaw('DAYOFWEEK(fecha) != ?', $domingo);
         $logs = DB::table('logs_empleados')
         ->select('logs_empleados.*',
-            'empleados.rfc as rfc',
-            'empleados.nombre as nombre',
-            'empleados.apellidos as apellidos',
-            DB::raw('TIMEDIFF(logs_empleados.salida, logs_empleados.entrada) as hrs'),
-            DB::raw('DAYOFWEEK(logs_empleados.fecha)-1 as dia'),
-            DB::raw('DAYOFMONTH(logs_empleados.fecha) as dia_mes')
-            )
-            ->whereIn('logs_empleados.empleado_id', $request->empleados)
-            ->whereBetween('logs_empleados.fecha', [$entrada->toDateString(), $salida->toDateString()] )
-            ->orderBy('logs_empleados.fecha', 'ASC')
+        'empleados.rfc as rfc',
+        'empleados.nombre as nombre',
+        'empleados.apellidos as apellidos',
+        DB::raw('TIMEDIFF(logs_empleados.salida, logs_empleados.entrada) as hrs'),
+        DB::raw('DAYOFWEEK(logs_empleados.fecha)-1 as dia'),
+        DB::raw('DAYOFMONTH(logs_empleados.fecha) as dia_mes')
+        )
+        ->whereIn('logs_empleados.empleado_id', $request->empleados)
+        ->whereBetween('logs_empleados.fecha', [$entrada->toDateString(), $salida->toDateString()] )
+        ->orderBy('logs_empleados.fecha', 'ASC')
         ->leftJoin('empleados','empleados.id', '=', 'logs_empleados.empleado_id')
         ->leftJoin('horarios_empleados', 'horarios_empleados.empleado_id', '=', 'empleados.id')
         ->distinct()
         ->get();
-        // ->where('logs_empleados.entrada', '<', 'horarios_empleados.entrada')
-        // ->orWhere('logs_empleados.salida', '>', 'horarios_empleados.salida')
 
-        $t_hrs = 0;
-        $t_hrs_d = 0;
-        $t_min = 0;
-        $t_min_d = 0;
+
+        $hrs = 0;
+        $mins = 0;
+        $hrs_d = 0;
+        $mins_d = 0;
 
         foreach ($logs as $key => $l) {
+            $time = explode(':', str_replace(' ', '', $l->hrs));
             if($l->dia != 0){
-                $time = explode(':', str_replace(' ', '', $l->hrs));
-                $t_hrs = $t_hrs + (int)$time[0];
-                $t_min = $t_min + (int)$time[1];
+                $hrs = $hrs + (int) $time[0];
+                $mins = $mins + (int) $time[1];
             }else{
-                $time = explode(':', str_replace(' ', '', $l->hrs));
-                $t_hrs_d = $t_hrs_d + (int)$time[0];
-                $t_min_d = $t_min_d + (int)$time[1];
+                $hrs_d = $hrs_d + (int) $time[0];
+                $mins_d = $mins_d + (int) $time[1];
             }
         }
-        $total_hrs = $t_hrs.':'.$t_min;
-        $total_hrs_d = $t_hrs_d.':'.$t_min_d;
-        $periodo =mb_strtoupper('DEL '.$entrada->format('d').' AL '.$salida->format('d \\DE F \\DE Y'));
+
+        $total_hrs = ($hrs +(int) ($mins/60)) . ':' . ($mins%60);
+        $total_hrs_d = ($hrs_d + (int)($mins_d/60)) . ':' . ($mins_d%60);
+
+        // dd(compact('total_hrs', 'total_hrs_d'));
+
+        $periodo = mb_strtoupper('DEL '.$entrada->format('d').' AL '.$salida->format('d \\DE F \\DE Y'));
 
         $pdf = PDF::loadView('logs.extras',
         ['logs' => $logs,

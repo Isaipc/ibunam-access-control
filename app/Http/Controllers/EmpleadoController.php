@@ -76,7 +76,8 @@ class EmpleadoController extends Controller
      */
     public function show(Request $request)
     {
-        return response()->json(['success' => true, 'empleado' => Empleado::find($request->id) ]);
+        $empleado = Empleado::find($request->id);
+        return response()->json(['success' => true, 'empleado' => $empleado, 'categoria' => $empleado->categoria->nombre]);
     }
 
     /**

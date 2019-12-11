@@ -12,7 +12,7 @@
             <h4 class="card-title">{{ __('Asignar horarios')}} </h4>
             {{-- <p class="card-text">Text</p> --}}
 
-            <form action="{{ route('horarios.store') }} " method="POST">
+            <form id="form" action="{{ route('horarios.store') }} " method="POST">
                 @csrf
                 <div class="form-group row">
                     <label for="" class="col-md-2 text-md-right text-lg-right">Empleado</label>
@@ -40,15 +40,11 @@
                 <div class="form-group row">
                     <label for="" class="col-md-2 text-md-right text-lg-right">Hora de entrada</label>
 
-                    <div class="input-group col-md-6 col-lg-4">
-                        <input id="i_entrada" type="time" name="entrada" class="form-control" placeholder=""  required>
-                    </div>
+                    <input id="entrada" type="time" name="entrada" class="form-control col-md-6 col-lg-4" required>
                 </div>
                 <div class="form-group row">
                     <label for="" class="col-md-2 text-md-right text-lg-right">Hora de salida</label>
-                    <div class="input-group col-md-6 col-lg-4">
-                        <input id="i_salida" type="time" name="salida" class="form-control" placeholder="" required>
-                    </div>
+                    <input id="salida" type="time" name="salida" class="form-control col-md-6 col-lg-4" required>
                 </div>
                 {{-- <div class="form-row align-items-center">
                     <div class="col"> --}}

@@ -26,7 +26,7 @@
         }
 
         .table{
-            font-size: 8pt;
+            font-size: 9pt;
         }
     </style>
 </head>
